@@ -40,11 +40,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    implementation 'com.hannesdorfmann.mosby3:viewstate:3.0.4' // MVP + ViewState support
-    implementation 'com.bluelinelabs:conductor:2.1.4'
-    implementation 'com.bluelinelabs:conductor-support:2.1.4'
+//    implementation 'com.hannesdorfmann.mosby3:viewstate:3.0.4' // MVP + ViewState support
+//    implementation 'com.bluelinelabs:conductor:2.1.4'
+//    implementation 'com.bluelinelabs:conductor-support:2.1.4'
 //    implementation 'com.bluelinelabs:conductor-rxlifecycle2:2.1.4'
-//    implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
     implementation('com.jakewharton:kotterknife:0.1.0-SNAPSHOT', {
         exclude group: 'com.android.support'
     })

@@ -18,20 +18,26 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".debug.ConfiguratorActionReceiver">
+        <receiver
+            android:name=".debug.ConfiguratorActionReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="console.intent.ACTION" />
+                <action android:name="configurator.intent.ACTION" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="debug.ConfiguratorConfigurationReceiver">
+        <receiver
+            android:name="debug.ConfiguratorConfigurationReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="console.intent.CONFIGURE" />
+                <action android:name="configurator.intent.CONFIGURE" />
             </intent-filter>
 
         </receiver>
 
-        <meta-data android:name="configurator_url" android:value="http://" />
+        <meta-data
+            android:name="configurator_url"
+            android:value="https://raw.githubusercontent.com/dallasgutauckis/console/master/sample-signatures.json" />
     </application>
 
 </manifest>

@@ -10,6 +10,6 @@ import android.content.Intent
 
 open class ActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        okjm
+
     }
 }

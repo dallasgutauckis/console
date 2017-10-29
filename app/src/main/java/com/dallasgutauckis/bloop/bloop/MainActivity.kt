@@ -15,6 +15,7 @@ import rx.schedulers.Schedulers
 
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
 
     val pinInput: TextView by bindView(R.id.pin_input)
     val saveButton: Button by bindView(R.id.save)
@@ -46,6 +47,13 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "can't store securely", Toast.LENGTH_LONG).show()
             }
         }
+
+        Configurators(this).findConfigurableApps().forEach {
+            Log.v(TAG, "packageName: ${it.activityInfo.packageName}");
+        }
+
+        // find applications that are configurable
+
     }
 
     override fun onResume() {
