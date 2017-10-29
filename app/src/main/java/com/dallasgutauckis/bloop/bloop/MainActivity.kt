@@ -2,7 +2,12 @@ package com.dallasgutauckis.bloop.bloop
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.Adapter
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -20,12 +25,28 @@ class MainActivity : AppCompatActivity() {
     val pinInput: TextView by bindView(R.id.pin_input)
     val saveButton: Button by bindView(R.id.save)
     val loadButton: Button by bindView(R.id.load)
+    val availableApps: RecyclerView by bindView(R.id.available_apps)
 
     private lateinit var whorlwind: Whorlwind
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        availableApps.layoutManager = LinearLayoutManager(this)
+        availableApps.adapter = object : Adapter<AvailableAppViewHolder>() {
+            override fun onBindViewHolder(holder: AvailableAppViewHolder?, position: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun getItemCount(): Int {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AvailableAppViewHolder {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }
 
         whorlwind = Whorlwind.create(this, SharedPreferencesStorage(this, "safespace"), "test")
 
@@ -48,11 +69,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Configurators(this).findConfigurableApps().forEach {
-            Log.v(TAG, "packageName: ${it.activityInfo.packageName}");
+        Configurators(this).configurableApps()
+                .subscribeOn(Schedulers.io())
+                .toList()
+                .subscribe {
+                    Log.v(TAG, "packageName: ${it.activityInfo.packageName}")
+                }
         }
 
-        // find applications that are configurable
+    class AvailableAppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    }
+
+    // find applications that are configurable
 
     }
 
