@@ -4,10 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bloop.iml" filepath="$PROJECT_DIR$/bloop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bloop.iml" filepath="$PROJECT_DIR$/bloop.iml" />
       <module fileurl="file://$PROJECT_DIR$/configurator/configurator.iml" filepath="$PROJECT_DIR$/configurator/configurator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/configurator/configurator.iml" filepath="$PROJECT_DIR$/configurator/configurator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/implsample/implsample.iml" filepath="$PROJECT_DIR$/implsample/implsample.iml" />
       <module fileurl="file://$PROJECT_DIR$/implsample/implsample.iml" filepath="$PROJECT_DIR$/implsample/implsample.iml" />
     </modules>
   </component>

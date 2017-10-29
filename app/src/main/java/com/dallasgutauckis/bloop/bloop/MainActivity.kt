@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.Adapter
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -27,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     val loadButton: Button by bindView(R.id.load)
     val availableApps: RecyclerView by bindView(R.id.available_apps)
 
+    val list = ArrayList<AvailableApp>()
+
     private lateinit var whorlwind: Whorlwind
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,19 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         availableApps.layoutManager = LinearLayoutManager(this)
-        availableApps.adapter = object : Adapter<AvailableAppViewHolder>() {
-            override fun onBindViewHolder(holder: AvailableAppViewHolder?, position: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun getItemCount(): Int {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AvailableAppViewHolder {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        }
+        availableApps.adapter = AvailableAppsAdapter(list)
 
         whorlwind = Whorlwind.create(this, SharedPreferencesStorage(this, "safespace"), "test")
 
@@ -73,17 +60,16 @@ class MainActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .toList()
                 .subscribe {
-                    Log.v(TAG, "packageName: ${it.activityInfo.packageName}")
+                    list.clear()
+                    it.forEach {
+                        list.add(AvailableApp(it.activityInfo.name, it.activityInfo.packageName))
+                    }
+                    availableApps.adapter.notifyDataSetChanged()
                 }
-        }
 
-    class AvailableAppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        // find applications that are configurable
     }
 
-    // find applications that are configurable
-
-    }
 
     override fun onResume() {
         super.onResume()
