@@ -2,7 +2,9 @@ package com.dallasgutauckis.bloop.configurator
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Base64
 import com.dallasgutauckis.bloop.configurator.logger.Logger
+import com.dallasgutauckis.configurator.shared.Signing
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -15,7 +17,6 @@ object Configurator {
     }
 
     private val TAG = "Configurator"
-    private val EXAMPLE_SIGNATURE = "deadbeef"
 
     private val signatures: MutableList<String> = ArrayList()
 
@@ -57,5 +58,26 @@ object Configurator {
                     }
                 })
         // fetch signatures from configurator_url
+    }
+
+    fun onMessage(publicKey: ByteArray, jsonPayload: ByteArray, signature: ByteArray) {
+        signatures.forEach {
+            logger?.v(TAG, "onMessage, current sig: $it")
+        }
+
+        val publicKeyString = Base64.encode(publicKey, Base64.NO_WRAP).toString(charset("utf-8"))
+        val signatureBase65 = Base64.encode(signature, Base64.NO_WRAP).toString(charset("utf-8"))
+
+        logger?.v(TAG, "Got message: ${jsonPayload.toString(charset("utf-8"))}; " +
+                "signed: $signatureBase65; " +
+                "from publickKey: $publicKeyString")
+
+        if (signatures.contains(publicKeyString)) {
+            logger?.v(TAG, "Valid sender!")
+
+            if (Signing.verifySignature(Signing.SignedData(jsonPayload, signature, publicKey))) {
+                logger?.v(TAG, "And it's signed properly!")
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.dallasgutauckis.configurator.shared;
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
 import java.security.*
 import java.security.spec.X509EncodedKeySpec
 
@@ -15,7 +16,12 @@ import java.security.spec.X509EncodedKeySpec
  */
 object Signing {
 
-    fun generateKeyPair(alias: String): PublicKey {
+    private fun getAlias(packageName: String): String {
+        return "app/${packageName}"
+    }
+
+    fun generateKeyPair(packageName: String): PublicKey {
+        val alias = getAlias(packageName)
         val keyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -31,13 +37,15 @@ object Signing {
         return keyPairGenerator.generateKeyPair().public
     }
 
-    fun hasKeyPair(alias: String): Boolean {
+    fun hasKeyPair(packageName: String): Boolean {
+        val alias = getAlias(packageName)
         val ks = KeyStore.getInstance("AndroidKeyStore")
         ks.load(null)
         return ks.containsAlias(alias)
     }
 
-    fun signData(alias: String, data: ByteArray): SignedData {
+    fun signData(packageName: String, data: ByteArray): SignedData {
+        val alias = getAlias(packageName)
         val entry = getAliasEntry(alias)
 
         val signature = Signature.getInstance("SHA256withECDSA")
@@ -67,10 +75,13 @@ object Signing {
     fun getAliasEntry(alias: String): KeyStore.PrivateKeyEntry {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")
         keyStore.load(null)
-        return keyStore.getEntry(alias, null) as? KeyStore.PrivateKeyEntry ?: throw IllegalStateException("Not an instance of a PrivateKeyEntry")
+        val entry = keyStore.getEntry(alias, null)
+        Log.v("DALLAS", "alias: $alias, entry: $entry")
+        return entry as? KeyStore.PrivateKeyEntry ?: throw IllegalStateException("Not an instance of a PrivateKeyEntry")
     }
 
-    fun getPublicKey(alias: String): PublicKey {
+    fun getPublicKey(packageName: String): PublicKey {
+        val alias = getAlias(packageName)
         return getAliasEntry(alias).certificate.publicKey
     }
 }

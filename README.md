@@ -4,7 +4,7 @@ A project for on-device Android app debugging
 
 ## Usage
 
- - Console app discovers applications based on querying for Activities that have action `"com.dallasgutauckis.console.ACTION_CONFIGURE"`
+ - Console app discovers applications based on querying for Services named ``
  - Console application always shows configurable apps
  - Console application requires signature to interact with debuggable app, uses signature to sign requests
    - Can key expose options/option-sets (e.g. in metadata of signed payload)?
@@ -12,13 +12,14 @@ A project for on-device Android app debugging
    - Debuggable app doesn't need to validate calling app, just the request
  - Signature needs to be stored securely (how?)
 
-## Debuggable app
+## Debuggable app (receiver)
 
  - Exposes configurable components based on initial signed request for "features" from Console app (via Broadcast)
 
 ## Private key
 
- - Private key should be created by Debuggable app creator, kept under lock and key, only used to create new keys for new debuggers (don't share private key)
+ - A private key will be created for any app the user wants to manage
+ - A public key will be provided for the user, and she shall put that private key either in a remote file (preferable for dynamicity) or manually add the signature at onCreate of Application
 
 ## Feature types
 
