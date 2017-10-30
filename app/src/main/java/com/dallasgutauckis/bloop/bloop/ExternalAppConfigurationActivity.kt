@@ -39,25 +39,29 @@ class ExternalAppConfigurationActivity : AppCompatActivity() {
     }
 
     private lateinit var configurators: Configurators
+    private lateinit var targetPackageName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_external_app_configuration)
 
         configurators = Configurators(packageManager)
+        targetPackageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
 
-        val packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME)
-
-        val serviceIntent = configurators.getBindIntent(packageName)
-        val bindService = bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
 
         setButton.setOnClickListener {
-            val signedData = Signing.signData(packageName, helloWorldText.text.toString().toByteArray())
+            val signedData = Signing.signData(targetPackageName, helloWorldText.text.toString().toByteArray())
             configurationService!!.onMessage(signedData.encodedPublicKey, signedData.data, signedData.signature)
             // TODO fix this to check for null and make sure there's a connection and all
         }
+    }
 
-        Toast.makeText(this@ExternalAppConfigurationActivity, "Bound", Toast.LENGTH_LONG).show()
+    override fun onStart() {
+        super.onStart()
+        val serviceIntent = configurators.getBindIntent(targetPackageName)
+        val bindService = bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+
+        Toast.makeText(this@ExternalAppConfigurationActivity, "Bound: $bindService", Toast.LENGTH_LONG).show()
         Log.v(TAG, "bindService: $bindService")
     }
 
