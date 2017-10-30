@@ -21,6 +21,7 @@ object Configurator {
     private val signatures: MutableList<String> = ArrayList()
 
     var logger: Logger? = null
+    var configListener: ConfigListener? = null
 
     fun addSignature(signature: String) {
         signatures.add(signature)
@@ -77,7 +78,13 @@ object Configurator {
 
             if (Signing.verifySignature(Signing.SignedData(jsonPayload, signature, publicKey))) {
                 logger?.v(TAG, "And it's signed properly!")
+                // propagate out to the app from here
+                configListener?.onConfigUpdated("example", jsonPayload.toString(charset("utf-8")))
             }
         }
+    }
+
+    interface ConfigListener {
+        fun onConfigUpdated(key: String, value: String)
     }
 }

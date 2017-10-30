@@ -86,12 +86,23 @@ class MainActivity : AppCompatActivity() {
                     configuredAppsRecyclerView.adapter.notifyDataSetChanged()
                 }
 
+        unconfiguredAppsRelay
+                .subscribe {
+                    unconfiguredAppsList.clear()
+                    unconfiguredAppsList.addAll(it)
+                    unconfiguredAppsRecyclerView.adapter.notifyDataSetChanged()
+                }
+
         Configurators(packageManager)
                 .configuredApps()
                 .subscribeOn(Schedulers.io())
                 .toList()
                 .subscribe(configuredAppsRelay)
 
-        // find applications that are configurable
+        Configurators(packageManager)
+                .unconfiguredApps()
+                .subscribeOn(Schedulers.io())
+                .toList()
+                .subscribe(unconfiguredAppsRelay)
     }
 }

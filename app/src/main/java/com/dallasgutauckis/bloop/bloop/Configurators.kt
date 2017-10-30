@@ -20,4 +20,8 @@ class Configurators(private val packageManager: PackageManager) {
     fun configuredApps(): Observable<AvailableApp> {
         return configurableApps().filter { Signing.hasKeyPair(it.packageName) }
     }
+
+    fun unconfiguredApps(): Observable<AvailableApp> {
+        return configurableApps().filter { !Signing.hasKeyPair(it.packageName) }
+    }
 }
