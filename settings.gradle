@@ -1,1 +1,1 @@
-include ':app', ':implsample', ':configurator'
+include ':app', ':implsample', ':configurator', ':configurator-shared'

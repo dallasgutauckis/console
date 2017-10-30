@@ -1,19 +1,17 @@
 package com.dallasgutauckis.bloop.bloop
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import rx.Observable
+import com.dallasgutauckis.configurator.shared.Signing
+import io.reactivex.Observable
 
-/**
- * Created by dallas on 2017-10-28.
- */
-class Configurators(private val context: Context) {
-    fun configurableApps(): Observable<ResolveInfo> {
-        return Observable.from(context.packageManager.queryBroadcastReceivers(Intent("configurator.intent.ACTION"), PackageManager.GET_META_DATA))
+class Configurators(private val packageManager: PackageManager) {
+    fun configurableApps(): Observable<AvailableApp> {
+        return Observable.fromIterable(packageManager.queryBroadcastReceivers(Intent("configurator.intent.ACTION"), PackageManager.GET_META_DATA))
+                .map { AvailableApp(packageManager.getApplicationIcon(it.activityInfo.applicationInfo), it.activityInfo.loadLabel(packageManager).toString(), it.activityInfo.packageName) }
     }
 
-    fun getConfiguredApps() {
+    fun configuredApps(): Observable<AvailableApp> {
+        return configurableApps().filter { Signing.hasKeyPair("app/" + it.packageName) }
     }
 }

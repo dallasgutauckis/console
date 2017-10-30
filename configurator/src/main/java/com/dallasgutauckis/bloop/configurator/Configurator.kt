@@ -11,10 +11,11 @@ import org.json.JSONArray
 
 object Configurator {
     init {
-        // use autoConfigure
+        // use autoConfigure, or manually add signatures via addSignature
     }
 
     private val TAG = "Configurator"
+    private val EXAMPLE_SIGNATURE = "deadbeef"
 
     private val signatures: MutableList<String> = ArrayList()
 

@@ -21,7 +21,16 @@ class AvailableAppItemView @JvmOverloads constructor(context: Context, attrs: At
         layoutDirection = HORIZONTAL
     }
 
-    fun setApp(app: AvailableApp) {
-        appTitle.text = app.appTitle
+    private lateinit var appItem: AvailableApp
+
+    fun setApp(value: AvailableApp) {
+        appItem = value
+
+        appTitle.text = value.appTitle
+        appIcon.setImageDrawable(value.appIcon)
+    }
+
+    fun getApp(): AvailableApp {
+        return appItem
     }
 }

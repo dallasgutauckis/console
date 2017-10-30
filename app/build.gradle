@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -29,30 +30,31 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    implementation project(":configurator-shared")
+
     implementation "com.android.support:appcompat-v7:${support_version}"
     implementation "com.android.support:recyclerview-v7:${support_version}"
     implementation "com.android.support:cardview-v7:${support_version}"
     implementation "com.android.support:design:${support_version}"
     implementation "com.android.support:support-annotations:${support_version}"
-
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
 //    implementation 'com.hannesdorfmann.mosby3:viewstate:3.0.4' // MVP + ViewState support
 //    implementation 'com.bluelinelabs:conductor:2.1.4'
 //    implementation 'com.bluelinelabs:conductor-support:2.1.4'
 //    implementation 'com.bluelinelabs:conductor-rxlifecycle2:2.1.4'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+
     implementation('com.jakewharton:kotterknife:0.1.0-SNAPSHOT', {
         exclude group: 'com.android.support'
     })
-    implementation 'com.squareup.whorlwind:whorlwind:1.0.1'
 
     // HTTP
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-
 
     // TESTING
     testImplementation 'junit:junit:4.12'
