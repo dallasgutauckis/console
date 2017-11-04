@@ -1,4 +1,4 @@
-package com.dallasgutauckis.bloop.bloop.config.model
+package com.dallasgutauckis.configurator.shared.model
 
 data class SwitchNodeData(val name: String
                           val title: String,

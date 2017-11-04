@@ -58,14 +58,12 @@ class ExternalAppConfigurationActivity : AppCompatActivity() {
             val result = configurationService!!.onMessage(signedData.encodedPublicKey, signedData.data, signedData.signature)
 
             if (MessageResponseCode.isError(result)) {
-                val errorMessage: String
-
-                if (result == MessageResponseCode.ERROR_INCORRECTLY_SIGNED_PAYLOAD) {
-                    errorMessage = "incorrectly signed payload"
+                val errorMessage: String = if (result == MessageResponseCode.ERROR_INCORRECTLY_SIGNED_PAYLOAD) {
+                    "incorrectly signed payload"
                 } else if (result == MessageResponseCode.ERROR_NO_MATCHING_PUBLIC_KEY) {
-                    errorMessage = "no matching public key found"
+                    "no matching public key found"
                 } else {
-                    errorMessage = "unknown error"
+                    "unknown error"
                 }
 
                 Snackbar.make(rootView, "Error: $errorMessage", Snackbar.LENGTH_LONG).show()

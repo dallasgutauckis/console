@@ -1,4 +1,4 @@
-package com.dallasgutauckis.bloop.bloop.config.model
+package com.dallasgutauckis.configurator.shared.model
 
 import com.squareup.moshi.Json
 

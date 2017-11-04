@@ -8,10 +8,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.util.Log
-import com.dallasgutauckis.bloop.bloop.config.model.Config
-import com.dallasgutauckis.bloop.bloop.config.model.NodeType
-import com.dallasgutauckis.bloop.bloop.config.model.RootDisplayType
-import com.dallasgutauckis.bloop.bloop.config.model.TabNodeData
+import com.dallasgutauckis.configurator.shared.model.Config
+import com.dallasgutauckis.configurator.shared.model.NodeType
+import com.dallasgutauckis.configurator.shared.model.RootDisplayType
+import com.dallasgutauckis.configurator.shared.model.TabNodeData
 import com.dallasgutauckis.configurator.shared.Signing
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
