@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Base64
 import com.dallasgutauckis.bloop.configurator.logger.Logger
+import com.dallasgutauckis.configurator.shared.MessageResponseCode
 import com.dallasgutauckis.configurator.shared.Signing
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -21,6 +22,7 @@ object Configurator {
     private val signatures: MutableList<String> = ArrayList()
 
     var logger: Logger? = null
+
     var configListener: ConfigListener? = null
 
     fun addSignature(signature: String) {
@@ -61,7 +63,7 @@ object Configurator {
         // fetch signatures from configurator_url
     }
 
-    fun onMessage(publicKey: ByteArray, jsonPayload: ByteArray, signature: ByteArray) {
+    fun onMessage(publicKey: ByteArray, jsonPayload: ByteArray, signature: ByteArray): Int {
         signatures.forEach {
             logger?.v(TAG, "onMessage, current sig: $it")
         }
@@ -73,15 +75,22 @@ object Configurator {
                 "signed: $signatureBase65; " +
                 "from publickKey: $publicKeyString")
 
-        if (signatures.contains(publicKeyString)) {
-            logger?.v(TAG, "Valid sender!")
-
-            if (Signing.verifySignature(Signing.SignedData(jsonPayload, signature, publicKey))) {
-                logger?.v(TAG, "And it's signed properly!")
-                // propagate out to the app from here
-                configListener?.onConfigUpdated("example", jsonPayload.toString(charset("utf-8")))
-            }
+        if (!signatures.contains(publicKeyString)) {
+            return MessageResponseCode.ERROR_NO_MATCHING_PUBLIC_KEY
         }
+
+        logger?.v(TAG, "Valid sender!")
+
+        if (!Signing.verifySignature(Signing.SignedData(jsonPayload, signature, publicKey))) {
+            return MessageResponseCode.ERROR_INCORRECTLY_SIGNED_PAYLOAD
+        }
+
+        logger?.v(TAG, "And it's signed properly!")
+
+        // propagate out to the app from here
+        configListener?.onConfigUpdated("example", jsonPayload.toString(charset("utf-8")))
+
+        return MessageResponseCode.SUCCESS
     }
 
     interface ConfigListener {

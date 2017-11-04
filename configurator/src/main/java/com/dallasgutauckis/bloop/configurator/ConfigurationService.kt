@@ -16,9 +16,9 @@ class ConfigurationService : Service() {
     }
 
     private val binder = object : IConfigurationService.Stub() {
-        override fun onMessage(publicKey: ByteArray, jsonPayload: ByteArray, signature: ByteArray) {
+        override fun onMessage(publicKey: ByteArray, jsonPayload: ByteArray, signature: ByteArray): Int {
             Log.v(TAG, "Got message: $jsonPayload")
-            Configurator.onMessage(publicKey, jsonPayload, signature)
+            return Configurator.onMessage(publicKey, jsonPayload, signature)
         }
     }
 }

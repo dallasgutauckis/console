@@ -8,9 +8,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.util.Log
-import android.widget.TextView
+import com.dallasgutauckis.bloop.bloop.config.model.Config
+import com.dallasgutauckis.bloop.bloop.config.model.NodeType
+import com.dallasgutauckis.bloop.bloop.config.model.RootDisplayType
+import com.dallasgutauckis.bloop.bloop.config.model.TabNodeData
 import com.dallasgutauckis.configurator.shared.Signing
 import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import java.util.*
@@ -32,12 +36,36 @@ class MainActivity : AppCompatActivity() {
         Log.v(TAG, message)
     }
 
+    fun blah() {
+        Config("com.seatgeek.android", RootDisplayType.TABS,
+                listOf(
+                        NodeType.TAB.create("network", "Network", "Control network configs", TabNodeData(
+                                NodeType.SWITCH.create("force_500", "Force 500s", "Force 500 error code responses", NodeType.SWITCH)
+                        )),
+                        NodeType.TAB.create("network", "Experiments", "Control A/B test configs", null)
+                )
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         configuredAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         configuredAppsRecyclerView.adapter = ConfiguredAppsAdapter(configuredAppsList, object : ConfiguredAppsAdapter.EventListener {
+            override fun onItemLongClick(item: AvailableApp, view: ConfiguredAppItemView): Boolean {
+                Signing.removeKeyPair(item.packageName)
+
+                val removeIndex = configuredAppsList.indexOf(item)
+                configuredAppsList.remove(item)
+                configuredAppsRecyclerView.adapter.notifyItemRemoved(removeIndex)
+
+                unconfiguredAppsList.add(item)
+                unconfiguredAppsRecyclerView.adapter.notifyItemInserted(unconfiguredAppsList.indexOf(item))
+
+                return true
+            }
+
             override fun onItemClick(item: AvailableApp, view: ConfiguredAppItemView) {
                 val intent = Intent(this@MainActivity, ExternalAppConfigurationActivity::class.java)
                 intent.putExtra(ExternalAppConfigurationActivity.EXTRA_PACKAGE_NAME, item.packageName)
@@ -53,14 +81,10 @@ class MainActivity : AppCompatActivity() {
 
                 log("public key: " + publicKeyBase64)
 
-                val textView = TextView(this@MainActivity)
-                textView.setTextIsSelectable(true)
-                textView.text = "your public key for ${item.packageName}: $publicKeyBase64; also printed to logcat"
-
                 val dialog = AlertDialog.Builder(this@MainActivity, R.style.Theme_AppCompat_Dialog)
                         .setTitle(item.appTitle)
                         .setIcon(item.appIcon)
-                        .setView(textView)
+                        .setMessage("your public key for ${item.packageName}: $publicKeyBase64; also printed to logcat")
 
                 dialog.show()
 
@@ -76,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         configuredAppsRelay
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     it.forEach {
                         log("item: $it")

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 
 class ConfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,
-                           private val eventListener: EventListener)
+                            private val eventListener: EventListener)
     : RecyclerView.Adapter<ConfiguredAppsAdapter.AvailableAppViewHolder>() {
 
     override fun onBindViewHolder(holder: AvailableAppViewHolder, position: Int) {
@@ -23,7 +23,12 @@ class ConfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,
 
     class AvailableAppViewHolder(private val configuredAppItemView: ConfiguredAppItemView,
                                  private val eventListener: EventListener)
-        : ViewHolder(configuredAppItemView), View.OnClickListener {
+        : ViewHolder(configuredAppItemView), View.OnClickListener, View.OnLongClickListener {
+        override fun onLongClick(v: View?): Boolean {
+            val item = v as ConfiguredAppItemView
+            return eventListener.onItemLongClick(item.getApp(), item)
+        }
+
         override fun onClick(v: View?) {
             val item = v as ConfiguredAppItemView
             eventListener.onItemClick(item.getApp(), item)
@@ -32,11 +37,18 @@ class ConfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,
         fun bind(item: AvailableApp) {
             configuredAppItemView.setApp(item)
             configuredAppItemView.setOnClickListener(this)
+            configuredAppItemView.setOnLongClickListener(this)
         }
 
     }
 
     interface EventListener {
         fun onItemClick(item: AvailableApp, view: ConfiguredAppItemView)
+
+        /**
+         * @return whether the long click was handled by this callback
+         * @see OnLongClickListener#onLongClick
+         */
+        fun onItemLongClick(item: AvailableApp, view: ConfiguredAppItemView): Boolean
     }
 }

@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.dallasgutauckis.configurator.shared.IConfigurationService
+import com.dallasgutauckis.configurator.shared.MessageResponseCode
 import com.dallasgutauckis.configurator.shared.Signing
 import kotterknife.bindView
 
@@ -23,6 +26,7 @@ class ExternalAppConfigurationActivity : AppCompatActivity() {
     var configurationService: IConfigurationService? = null
     val helloWorldText: EditText by bindView(R.id.hello_world_text)
     val setButton: Button by bindView(R.id.set_button)
+    val rootView: View by bindView(R.id.activity_root)
 
     val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -51,8 +55,23 @@ class ExternalAppConfigurationActivity : AppCompatActivity() {
 
         setButton.setOnClickListener {
             val signedData = Signing.signData(targetPackageName, helloWorldText.text.toString().toByteArray())
-            configurationService!!.onMessage(signedData.encodedPublicKey, signedData.data, signedData.signature)
-            // TODO fix this to check for null and make sure there's a connection and all
+            val result = configurationService!!.onMessage(signedData.encodedPublicKey, signedData.data, signedData.signature)
+
+            if (MessageResponseCode.isError(result)) {
+                val errorMessage: String
+
+                if (result == MessageResponseCode.ERROR_INCORRECTLY_SIGNED_PAYLOAD) {
+                    errorMessage = "incorrectly signed payload"
+                } else if (result == MessageResponseCode.ERROR_NO_MATCHING_PUBLIC_KEY) {
+                    errorMessage = "no matching public key found"
+                } else {
+                    errorMessage = "unknown error"
+                }
+
+                Snackbar.make(rootView, "Error: $errorMessage", Snackbar.LENGTH_LONG).show()
+            }
+
+            // TODO fix this to check for null and make sure there's a connection and all that
         }
     }
 

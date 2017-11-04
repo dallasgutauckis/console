@@ -44,6 +44,12 @@ object Signing {
         return ks.containsAlias(alias)
     }
 
+    fun removeKeyPair(packageName: String) {
+        val ks = KeyStore.getInstance("AndroidKeyStore")
+        ks.load(null)
+        ks.deleteEntry(getAlias(packageName))
+    }
+
     fun signData(packageName: String, data: ByteArray): SignedData {
         val alias = getAlias(packageName)
         val entry = getAliasEntry(alias)
@@ -67,12 +73,7 @@ object Signing {
         return signature.verify(signedData.signature)
     }
 
-    data class SignedData(
-            val data: ByteArray,
-            val signature: ByteArray,
-            val encodedPublicKey: ByteArray)
-
-    fun getAliasEntry(alias: String): KeyStore.PrivateKeyEntry {
+    private fun getAliasEntry(alias: String): KeyStore.PrivateKeyEntry {
         val keyStore = KeyStore.getInstance("AndroidKeyStore")
         keyStore.load(null)
         val entry = keyStore.getEntry(alias, null)
@@ -84,4 +85,9 @@ object Signing {
         val alias = getAlias(packageName)
         return getAliasEntry(alias).certificate.publicKey
     }
+
+    data class SignedData(
+            val data: ByteArray,
+            val signature: ByteArray,
+            val encodedPublicKey: ByteArray)
 }
