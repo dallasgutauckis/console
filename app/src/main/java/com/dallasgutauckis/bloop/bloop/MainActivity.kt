@@ -8,11 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.util.Log
-import com.dallasgutauckis.configurator.shared.model.Config
-import com.dallasgutauckis.configurator.shared.model.NodeType
-import com.dallasgutauckis.configurator.shared.model.RootDisplayType
-import com.dallasgutauckis.configurator.shared.model.TabNodeData
 import com.dallasgutauckis.configurator.shared.Signing
+import com.dallasgutauckis.configurator.shared.model.Config
+import com.dallasgutauckis.configurator.shared.model.Node
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,12 +35,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun blah() {
-        Config("com.seatgeek.android", RootDisplayType.TABS,
+        val config = Config("com.seatgeek.android",
                 listOf(
-                        NodeType.TAB.create("network", "Network", "Control network configs", TabNodeData(
-                                NodeType.SWITCH.create("force_500", "Force 500s", "Force 500 error code responses", NodeType.SWITCH)
+                        Node.createTab("network", "Network", listOf(
+                                Node.createSwitch("example_switch", "Example switch", "Switch description", false),
+                                Node.createSwitch("example_switch", "Example switch on", null, enabled = true)
+
                         )),
-                        NodeType.TAB.create("network", "Experiments", "Control A/B test configs", null)
+                        Node.createTab("misc", "Miscellaneous", listOf(
+                                Node.createEditText("hello_world", "Hello world text", "")
+                        ))
                 )
         )
     }
@@ -50,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        blah()
 
         configuredAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         configuredAppsRecyclerView.adapter = ConfiguredAppsAdapter(configuredAppsList, object : ConfiguredAppsAdapter.EventListener {
