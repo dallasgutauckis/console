@@ -1,7 +1,7 @@
 package com.dallasgutauckis.configurator.shared.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class CheckboxNodeItem(val title: String,
                             val description: String = "",
-                            @Json(name = "is_checked") val isChecked: Boolean)
+                            @SerializedName("is_checked") val isChecked: Boolean)
