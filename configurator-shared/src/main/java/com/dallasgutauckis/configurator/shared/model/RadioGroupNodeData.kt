@@ -1,7 +1,7 @@
 package com.dallasgutauckis.configurator.shared.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class RadioGroupNodeData(val name: String,
-                              @Json(name = "selected_name") val selectedName: String,
+                              @SerializedName("selected_name") val selectedName: String,
                               val radios: List<RadioData>)
