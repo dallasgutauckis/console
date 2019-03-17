@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/configurator/configurator.iml" filepath="$PROJECT_DIR$/configurator/configurator.iml" />
       <module fileurl="file://$PROJECT_DIR$/configurator-shared/configurator-shared.iml" filepath="$PROJECT_DIR$/configurator-shared/configurator-shared.iml" />
-      <module fileurl="file://$PROJECT_DIR$/console.iml" filepath="$PROJECT_DIR$/console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/console.iml" filepath="$PROJECT_DIR$/.idea/console.iml" />
       <module fileurl="file://$PROJECT_DIR$/implsample/implsample.iml" filepath="$PROJECT_DIR$/implsample/implsample.iml" />
     </modules>
   </component>

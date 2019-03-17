@@ -1,5 +1,6 @@
 package com.dallasgutauckis.bloop.bloop
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,10 +64,10 @@ class MainActivity : AppCompatActivity() {
 
                 val removeIndex = configuredAppsList.indexOf(item)
                 configuredAppsList.remove(item)
-                configuredAppsRecyclerView.adapter.notifyItemRemoved(removeIndex)
+                configuredAppsRecyclerView.adapter!!.notifyItemRemoved(removeIndex)
 
                 unconfiguredAppsList.add(item)
-                unconfiguredAppsRecyclerView.adapter.notifyItemInserted(unconfiguredAppsList.indexOf(item))
+                unconfiguredAppsRecyclerView.adapter!!.notifyItemInserted(unconfiguredAppsList.indexOf(item))
 
                 return true
             }
@@ -95,11 +97,11 @@ class MainActivity : AppCompatActivity() {
 
                 val indexRemoved = unconfiguredAppsList.indexOf(item)
                 unconfiguredAppsList.remove(item)
-                unconfiguredAppsRecyclerView.adapter.notifyItemRemoved(indexRemoved)
+                unconfiguredAppsRecyclerView.adapter!!.notifyItemRemoved(indexRemoved)
 
                 configuredAppsList.add(item)
                 val indexAdded = configuredAppsList.indexOf(item)
-                configuredAppsRecyclerView.adapter.notifyItemInserted(indexAdded)
+                configuredAppsRecyclerView.adapter!!.notifyItemInserted(indexAdded)
             }
         })
 
@@ -112,14 +114,14 @@ class MainActivity : AppCompatActivity() {
                     }
                     configuredAppsList.clear()
                     configuredAppsList.addAll(it)
-                    configuredAppsRecyclerView.adapter.notifyDataSetChanged()
+                    configuredAppsRecyclerView.adapter!!.notifyDataSetChanged()
                 }
 
         unconfiguredAppsRelay
                 .subscribe {
                     unconfiguredAppsList.clear()
                     unconfiguredAppsList.addAll(it)
-                    unconfiguredAppsRecyclerView.adapter.notifyDataSetChanged()
+                    unconfiguredAppsRecyclerView.adapter!!.notifyDataSetChanged()
                 }
 
         Configurators(packageManager)
