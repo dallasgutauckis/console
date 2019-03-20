@@ -7,17 +7,5 @@
             android:name=".ConfigurationService"
             android:exported="true"
             tools:ignore="ExportedService" />
-
-        <service
-            android:name=".ConsoleTileService"
-            android:icon="@drawable/ic_settings_remote"
-            android:exported="true"
-            android:enabled="true"
-            android:label="@string/tile_title"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
     </application>
 </manifest>

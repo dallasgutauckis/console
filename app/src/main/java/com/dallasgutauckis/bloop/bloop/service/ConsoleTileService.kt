@@ -1,4 +1,4 @@
-package com.dallasgutauckis.bloop.configurator
+package com.dallasgutauckis.bloop.bloop.service
 
 import android.annotation.TargetApi
 import android.os.Build
