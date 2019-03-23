@@ -8,9 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/configurator" />
-            <option value="$PROJECT_DIR$/configurator-shared" />
+            <option value="$PROJECT_DIR$/henson-app" />
+            <option value="$PROJECT_DIR$/henson-lib" />
+            <option value="$PROJECT_DIR$/henson-shared" />
             <option value="$PROJECT_DIR$/implsample" />
           </set>
         </option>

@@ -1,1 +1,1 @@
-include ':app', ':implsample', ':configurator', ':configurator-shared'
+include ':henson-app', ':implsample', ':henson-lib', ':henson-shared'

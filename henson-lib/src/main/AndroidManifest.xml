@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dallasgutauckis.henson.configurator">
+
+    <application>
+        <service
+            android:name="com.dallasgutauckis.henson.configurator.ConfigurationService"
+            android:exported="true"
+            tools:ignore="ExportedService" />
+    </application>
+</manifest>

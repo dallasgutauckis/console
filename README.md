@@ -1,20 +1,24 @@
-# Console
+# Henson 
 
 A project for on-device Android app debugging
 
+## The name
+
+The name Henson comes from [Jim Henson](https://en.wikipedia.org/wiki/Jim_Henson), best known for creating [The Muppets](https://en.wikipedia.org/wiki/The_Muppets). He was a puppeteer, and this project is about controlling other applications, hence "Henson".
+
 ## Usage
 
- - Console app discovers applications based on querying for Services named ``
- - Console application always shows configurable apps
- - Console application requires signature to interact with debuggable app, uses signature to sign requests
+ - Henson app discovers applications based on querying for Services named ``
+ - Henson application always shows configurable apps
+ - Henson application requires signature to interact with debuggable app, uses signature to sign requests
    - Can key expose options/option-sets (e.g. in metadata of signed payload)?
-   - Debuggable app must approve/deny signed requests from Console app (has public key, can validate public key'd request)
+   - Debuggable app must approve/deny signed requests from Henson app (has public key, can validate public key'd request)
    - Debuggable app doesn't need to validate calling app, just the request
  - Signature needs to be stored securely (how?)
 
 ## Debuggable app (receiver)
 
- - Exposes configurable components based on initial signed request for "features" from Console app (via Broadcast)
+ - Exposes configurable components based on initial signed request for "features" from Henson app (via Broadcast)
 
 ## Private key
 

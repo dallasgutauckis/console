@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dallasgutauckis.bloop.consoleimplementationsample.MainActivity">
+    tools:context="com.dallasgutauckis.henson.consoleimplementationsample.MainActivity">
 
     <TextView
         android:id="@+id/configurable_text"
