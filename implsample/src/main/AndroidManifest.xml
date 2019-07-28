@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="configurator_url"
-            android:value="https://raw.githubusercontent.com/dallasgutauckis/console/master/sample-signatures.json?cb=1" />
+            android:value="https://raw.githubusercontent.com/dallasgutauckis/console/master/sample-signatures.json" />
     </application>
 
 </manifest>

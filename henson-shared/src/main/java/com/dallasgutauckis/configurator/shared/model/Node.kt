@@ -6,8 +6,8 @@ data class Node(
         val data: Any?) {
 
     companion object {
-        fun createTab(name: String, title: String, items: List<Node>): Node {
-            return Node(NodeType.TAB, name, TabNodeData(title, items))
+        fun createTab(name: String, title: String, items: List<Node>): TabNode {
+            return TabNode(title, items)
         }
 
         fun createEditText(name: String, hint: String, text: String): Node {

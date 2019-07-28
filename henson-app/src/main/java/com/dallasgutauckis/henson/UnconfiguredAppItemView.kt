@@ -19,7 +19,7 @@ class UnconfiguredAppItemView @JvmOverloads constructor(context: Context, attrs:
 
     init {
         View.inflate(getContext(), R.layout.unconfigured_app_item_view, this)
-        orientation = LinearLayout.HORIZONTAL
+        orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
     }
 

@@ -55,6 +55,13 @@ class ExternalAppConfigurationActivity : AppCompatActivity() {
 
         setButton.setOnClickListener {
             val signedData = Signing.signData(targetPackageName, helloWorldText.text.toString().toByteArray())
+
+
+            if (configurationService == null) {
+                Snackbar.make(findViewById(R.id.activity_root), "Not bound!", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val result = configurationService!!.onMessage(signedData.encodedPublicKey, signedData.data, signedData.signature)
 
             if (MessageResponseCode.isError(result)) {

@@ -1,6 +1,5 @@
 package com.dallasgutauckis.henson
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
@@ -43,9 +42,10 @@ class MainActivity : AppCompatActivity() {
                         ))
                 )
         )
+
+        log(config.toString())
     }
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,12 +67,11 @@ class MainActivity : AppCompatActivity() {
 
                 log("public key: $publicKeyBase64")
 
-                val dialog = AlertDialog.Builder(this@MainActivity, R.style.Theme_AppCompat_Dialog)
+                AlertDialog.Builder(this@MainActivity, R.style.Theme_AppCompat_Dialog)
                         .setTitle(item.appTitle)
                         .setIcon(item.appIcon)
                         .setMessage("your public key for ${item.packageName}: $publicKeyBase64; also printed to logcat")
-
-                dialog.show()
+                        .show()
 
 
                 val indexRemoved = unconfiguredAppsList.indexOf(item)
