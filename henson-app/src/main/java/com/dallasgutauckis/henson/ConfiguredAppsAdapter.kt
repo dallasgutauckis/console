@@ -1,9 +1,8 @@
 package com.dallasgutauckis.henson
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.dallasgutauckis.henson.config.model.AvailableApp
 
 class ConfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,
@@ -24,7 +23,7 @@ class ConfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,
 
     class AvailableAppViewHolder(private val configuredAppItemView: ConfiguredAppItemView,
                                  private val eventListener: EventListener)
-        : ViewHolder(configuredAppItemView), View.OnClickListener, View.OnLongClickListener {
+        : RecyclerView.ViewHolder(configuredAppItemView), View.OnClickListener, View.OnLongClickListener {
         override fun onLongClick(v: View?): Boolean {
             val item = v as ConfiguredAppItemView
             return eventListener.onItemLongClick(item.getApp(), item)

@@ -1,4 +1,4 @@
-package com.dallasgutauckis.henson.configurator.logger
+package com.dallasgutauckis.henson.muppet.logger
 
 
 interface Logger {

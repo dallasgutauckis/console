@@ -1,8 +1,8 @@
 package com.dallasgutauckis.henson.consoleimplementationsample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.dallasgutauckis.henson.consoleimplementationsample.debug.ImplApplication
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        (findViewById<TextView>(R.id.configurable_text) as TextView).text = (application as ImplApplication).lastValue
+        (findViewById<TextView>(R.id.configurable_text)).text = (application as ImplApplication).lastValue
     }
 }

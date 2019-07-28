@@ -13,16 +13,16 @@ class Muppets(private val packageManager: PackageManager) {
         return intent
     }
 
-    fun configurableApps(): Observable<AvailableApp> {
-        return Observable.fromIterable(packageManager.queryBroadcastReceivers(Intent("configurator.intent.ACTION"), PackageManager.GET_META_DATA))
+    fun configurableApps(): List<AvailableApp> {
+        return packageManager.queryBroadcastReceivers(Intent("configurator.intent.ACTION"), PackageManager.GET_META_DATA)
                 .map { AvailableApp(packageManager.getApplicationIcon(it.activityInfo.applicationInfo), it.activityInfo.loadLabel(packageManager).toString(), it.activityInfo.packageName) }
     }
 
-    fun configuredApps(): Observable<AvailableApp> {
+    fun configuredApps(): List<AvailableApp> {
         return configurableApps().filter { Signing.hasKeyPair(it.packageName) }
     }
 
-    fun unconfiguredApps(): Observable<AvailableApp> {
+    fun unconfiguredApps(): List<AvailableApp> {
         return configurableApps().filter { !Signing.hasKeyPair(it.packageName) }
     }
 }

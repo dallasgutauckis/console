@@ -1,8 +1,8 @@
 package com.dallasgutauckis.henson.consoleimplementationsample.debug
 
 import android.app.Application
-import com.dallasgutauckis.henson.configurator.Configurator
-import com.dallasgutauckis.henson.configurator.logger.LogcatLogger
+import com.dallasgutauckis.henson.muppet.Configurator
+import com.dallasgutauckis.henson.muppet.logger.LogcatLogger
 
 
 class ImplApplication : Application(), Configurator.ConfigListener {
@@ -16,7 +16,11 @@ class ImplApplication : Application(), Configurator.ConfigListener {
         super.onCreate()
 
         Configurator.logger = LogcatLogger()
-        Configurator.autoConfigure(this)
         Configurator.configListener = this
+
+        Thread {
+            Configurator.autoConfigure(this)
+        }.start()
+
     }
 }

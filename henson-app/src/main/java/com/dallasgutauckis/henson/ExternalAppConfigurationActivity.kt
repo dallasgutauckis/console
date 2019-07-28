@@ -5,16 +5,16 @@ import android.content.Context
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.dallasgutauckis.configurator.shared.IConfigurationService
 import com.dallasgutauckis.configurator.shared.MessageResponseCode
 import com.dallasgutauckis.configurator.shared.Signing
+import com.google.android.material.snackbar.Snackbar
 import kotterknife.bindView
 
 class ExternalAppConfigurationActivity : AppCompatActivity() {

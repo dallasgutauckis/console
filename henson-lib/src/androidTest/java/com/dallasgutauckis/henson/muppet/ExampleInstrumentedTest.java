@@ -1,4 +1,4 @@
-package com.dallasgutauckis.henson.configurator;
+package com.dallasgutauckis.henson.muppet;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

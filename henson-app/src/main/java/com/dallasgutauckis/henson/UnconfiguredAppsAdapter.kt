@@ -1,8 +1,8 @@
 package com.dallasgutauckis.henson
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.dallasgutauckis.henson.config.model.AvailableApp
 
 class UnconfiguredAppsAdapter(private val list: ArrayList<AvailableApp>,

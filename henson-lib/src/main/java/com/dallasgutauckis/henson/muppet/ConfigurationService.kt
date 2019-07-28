@@ -1,4 +1,4 @@
-package com.dallasgutauckis.henson.configurator
+package com.dallasgutauckis.henson.muppet
 
 import android.app.Service
 import android.content.Intent

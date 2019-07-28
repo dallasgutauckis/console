@@ -3,4 +3,7 @@
     <string name="tile_title">Henson</string>
     <string name="channel_name">Foreground Service Notification</string>
     <string name="channel_description">Only for the foreground service notification</string>
+    <string name="configured_applications">Configured Applications</string>
+    <string name="available_applications">Available Applications</string>
+    <string name="refresh">Refresh</string>
 </resources>

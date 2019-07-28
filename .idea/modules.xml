@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/console.iml" filepath="$PROJECT_DIR$/console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/henson.iml" filepath="$PROJECT_DIR$/henson.iml" />
       <module fileurl="file://$PROJECT_DIR$/henson-app/henson-app.iml" filepath="$PROJECT_DIR$/henson-app/henson-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/henson-lib/henson-lib.iml" filepath="$PROJECT_DIR$/henson-lib/henson-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/henson-shared/henson-shared.iml" filepath="$PROJECT_DIR$/henson-shared/henson-shared.iml" />

@@ -3,19 +3,16 @@ package com.dallasgutauckis.henson
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dallasgutauckis.configurator.shared.Signing
 import com.dallasgutauckis.configurator.shared.model.Config
 import com.dallasgutauckis.configurator.shared.model.Node
 import com.dallasgutauckis.henson.config.model.AvailableApp
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import java.util.*
 
@@ -26,13 +23,10 @@ class MainActivity : AppCompatActivity() {
     val configuredAppsRecyclerView: RecyclerView by bindView(R.id.configured_apps)
     val unconfiguredAppsRecyclerView: RecyclerView by bindView(R.id.unconfigured_apps)
 
-    val configuredAppsRelay = PublishRelay.create<Collection<AvailableApp>>()
-    val unconfiguredAppsRelay = PublishRelay.create<Collection<AvailableApp>>()
-
     val configuredAppsList = ArrayList<AvailableApp>()
     val unconfiguredAppsList = ArrayList<AvailableApp>()
 
-    fun log(message: String) {
+    private fun log(message: String) {
         Log.v(TAG, message)
     }
 
@@ -58,6 +52,43 @@ class MainActivity : AppCompatActivity() {
 
         blah()
 
+        setUpConfiguredApps(Muppets(packageManager).configuredApps())
+        setUpUnconfiguredApps(Muppets(packageManager).unconfiguredApps())
+    }
+
+    private fun setUpUnconfiguredApps(unconfiguredApps: List<AvailableApp>) {
+        unconfiguredAppsList.addAll(unconfiguredApps)
+
+        unconfiguredAppsRecyclerView.layoutManager = LinearLayoutManager(this)
+        unconfiguredAppsRecyclerView.adapter = UnconfiguredAppsAdapter(unconfiguredAppsList, object : UnconfiguredAppsAdapter.EventListener {
+            override fun onItemClick(item: AvailableApp, view: UnconfiguredAppItemView) {
+                val encodedPublicKey = Signing.generateKeyPair(item.packageName).encoded
+                val publicKeyBase64 = Base64.encode(encodedPublicKey, Base64.DEFAULT).toString(charset("utf-8"))
+
+                log("public key: $publicKeyBase64")
+
+                val dialog = AlertDialog.Builder(this@MainActivity, R.style.Theme_AppCompat_Dialog)
+                        .setTitle(item.appTitle)
+                        .setIcon(item.appIcon)
+                        .setMessage("your public key for ${item.packageName}: $publicKeyBase64; also printed to logcat")
+
+                dialog.show()
+
+
+                val indexRemoved = unconfiguredAppsList.indexOf(item)
+                unconfiguredAppsList.remove(item)
+                unconfiguredAppsRecyclerView.adapter!!.notifyItemRemoved(indexRemoved)
+
+                configuredAppsList.add(item)
+                val indexAdded = configuredAppsList.indexOf(item)
+                configuredAppsRecyclerView.adapter!!.notifyItemInserted(indexAdded)
+            }
+        })
+    }
+
+    private fun setUpConfiguredApps(configuredApps: List<AvailableApp>) {
+        configuredAppsList.addAll(configuredApps)
+
         configuredAppsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         configuredAppsRecyclerView.adapter = ConfiguredAppsAdapter(configuredAppsList, object : ConfiguredAppsAdapter.EventListener {
             override fun onItemLongClick(item: AvailableApp, view: ConfiguredAppItemView): Boolean {
@@ -79,62 +110,5 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
-        unconfiguredAppsRecyclerView.layoutManager = LinearLayoutManager(this)
-        unconfiguredAppsRecyclerView.adapter = UnconfiguredAppsAdapter(unconfiguredAppsList, object : UnconfiguredAppsAdapter.EventListener {
-            override fun onItemClick(item: AvailableApp, view: UnconfiguredAppItemView) {
-                val encodedPublicKey = Signing.generateKeyPair(item.packageName).encoded
-                val publicKeyBase64 = Base64.encode(encodedPublicKey, Base64.DEFAULT).toString(charset("utf-8"))
-
-                log("public key: " + publicKeyBase64)
-
-                val dialog = AlertDialog.Builder(this@MainActivity, R.style.Theme_AppCompat_Dialog)
-                        .setTitle(item.appTitle)
-                        .setIcon(item.appIcon)
-                        .setMessage("your public key for ${item.packageName}: $publicKeyBase64; also printed to logcat")
-
-                dialog.show()
-
-
-                val indexRemoved = unconfiguredAppsList.indexOf(item)
-                unconfiguredAppsList.remove(item)
-                unconfiguredAppsRecyclerView.adapter!!.notifyItemRemoved(indexRemoved)
-
-                configuredAppsList.add(item)
-                val indexAdded = configuredAppsList.indexOf(item)
-                configuredAppsRecyclerView.adapter!!.notifyItemInserted(indexAdded)
-            }
-        })
-
-        configuredAppsRelay
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    it.forEach {
-                        log("item: $it")
-                        log("sig: ${Base64.encode(Signing.getPublicKey(it.packageName).encoded, Base64.NO_WRAP).toString(charset("utf-8"))}")
-                    }
-                    configuredAppsList.clear()
-                    configuredAppsList.addAll(it)
-                    configuredAppsRecyclerView.adapter!!.notifyDataSetChanged()
-                }
-
-        unconfiguredAppsRelay
-                .subscribe {
-                    unconfiguredAppsList.clear()
-                    unconfiguredAppsList.addAll(it)
-                    unconfiguredAppsRecyclerView.adapter!!.notifyDataSetChanged()
-                }
-
-        Muppets(packageManager)
-                .configuredApps()
-                .subscribeOn(Schedulers.io())
-                .toList()
-                .subscribe(configuredAppsRelay)
-
-        Muppets(packageManager)
-                .unconfiguredApps()
-                .subscribeOn(Schedulers.io())
-                .toList()
-                .subscribe(unconfiguredAppsRelay)
     }
 }

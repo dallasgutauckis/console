@@ -8,9 +8,8 @@ import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import android.support.v4.app.NotificationCompat
 import android.util.Log
-import com.dallasgutauckis.henson.ExternalAppConfigurationActivity
+import androidx.core.app.NotificationCompat
 import com.dallasgutauckis.henson.MainActivity
 import com.dallasgutauckis.henson.R
 
